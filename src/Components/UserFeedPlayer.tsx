@@ -7,7 +7,7 @@ const UserFeedPlayer:React.FC<{stream:MediaStream}> = ({stream}) => {
         if(videoRef.current && stream){
             videoRef.current.srcObject=stream
         }
-    },[])
+    },[stream])
   return (
     <video
         ref={videoRef}
