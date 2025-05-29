@@ -1,4 +1,4 @@
-import { ADD_PEER,REMOVE_PEER } from "../Actions/peerActions";
+import { ADD_PEER,REMOVE_PEER, RESET } from "../Actions/peerActions";
 
 export type PeerState = Record<string,{stream:MediaStream}>;   
 
@@ -9,6 +9,8 @@ type peerAction ={
 } | {
     type:typeof REMOVE_PEER,
     payload :{peerId:string}
+} | {
+    type: typeof RESET
 }
 
 
@@ -22,10 +24,16 @@ export const peerReducer =(state:PeerState, action :peerAction )=>{
                 }
             }
         case "REMOVE_PEER":
-            const newState = {...state};
-            delete newState[action.payload.peerId];
+            console.log("before delte",state);
+            console.log("trying to delete peerId:", action.payload.peerId);
+            const newState = Object.fromEntries(
+            Object.entries(state).filter(([key]) => key !== action.payload.peerId)
+            );
+
+            console.log("newstate after delete",newState);
             return newState;
-        
+        case "RESET":
+            return {};
         default:
             return {...state};
     }
