@@ -15,14 +15,16 @@ export const CreateRoom:React.FC = () => {
     }
   return (
     <>
-      <button onClick={initRoom} className='btn btn-secondary'>
-        start a new meeting in a new room
+      <div  className='flex flex-col  items-center justify-center min-h-screen w-full bg-slate-200 '>
+        <button onClick={initRoom} className='btn btn-secondary h-12 text-xl font-semibold '>
+         Start a New Meeting
       </button>
       <div className='mt-4 flex justify-center items-center gap-2' >
         <input placeholder='enter room code' value={val} onChange={(e)=>{setVal(e.target.value)}}
-               className='h-9'
+               className='h-12 rounded-md p-2'
         />
-        <button onClick={joinRoom} className='btn btn-accent'>Join Room</button>
+        <button onClick={joinRoom} className='btn btn-accent h-12 text-xl font-semibold'>Join Room</button>
+      </div>
       </div>
     </>
   )

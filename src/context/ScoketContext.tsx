@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import {v4 as UUIDv4} from 'uuid'
 import Peer from "peerjs"
 import { peerReducer } from "../Reducers/peerReducer";
-import { addPeerAction, removePeerAction } from "../Actions/peerActions";
+import { addPeerAction, removePeerAction, resetAction } from "../Actions/peerActions";
 
 
 const ws_server = "http://localhost:3000";
@@ -78,8 +78,13 @@ export const SocketProvider :React.FC<Props> =({children})=>{
         console.log("calling ready");
         socket.emit("ready")
 
-        socket?.on('user-leave',(peerId)=>{
+        socket.on("call-end",({peerId})=>{
+            console.log("call end krdi esne => ",peerId)
             dispatch(removePeerAction(peerId));
+        })
+        socket.on("clear-my-peers",()=>{
+            console.log("clearing my own peers my strem & peerid remain same &socket also remain same");
+            dispatch(resetAction());
         })
     },[user,stream])
     
