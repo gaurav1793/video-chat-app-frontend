@@ -22,7 +22,9 @@ export const peerReducer =(state:PeerState, action :peerAction )=>{
                 }
             }
         case "REMOVE_PEER":
-             return {...state};
+            const newState = {...state};
+            delete newState[action.payload.peerId];
+            return newState;
         
         default:
             return {...state};

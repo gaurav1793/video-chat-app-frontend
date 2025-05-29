@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import {v4 as UUIDv4} from 'uuid'
 import Peer from "peerjs"
 import { peerReducer } from "../Reducers/peerReducer";
-import { addPeerAction } from "../Actions/peerActions";
+import { addPeerAction, removePeerAction } from "../Actions/peerActions";
 
 
 const ws_server = "http://localhost:3000";
@@ -56,12 +56,13 @@ export const SocketProvider :React.FC<Props> =({children})=>{
             console.log("hai hi nhi yaar user , stream")
             return;
         }
-
+        
+        console.log("user",user,"strem",stream);
         socket.on("user-joined",({peerId})=>{
            const call = user.call(peerId,stream);
            console.log("calling the new peer",peerId);
-           call.on("stream",()=>{
-            dispatch(addPeerAction(peerId,stream));
+           call.on("stream",(remoteStream)=>{
+            dispatch(addPeerAction(peerId,remoteStream));
            })
         })
 
@@ -69,12 +70,17 @@ export const SocketProvider :React.FC<Props> =({children})=>{
             //when others are calling
             console.log("receiving a call");
             call.answer(stream);
-            call.on("stream",()=>{
-            dispatch(addPeerAction(call.peer,stream));
+            call.on("stream",(remoteStream)=>{
+            dispatch(addPeerAction(call.peer,remoteStream));
            })
         })
-
+        
+        console.log("calling ready");
         socket.emit("ready")
+
+        socket?.on('user-leave',(peerId)=>{
+            dispatch(removePeerAction(peerId));
+        })
     },[user,stream])
     
     return (
