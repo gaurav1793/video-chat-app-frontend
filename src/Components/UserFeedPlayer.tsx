@@ -9,12 +9,14 @@ const UserFeedPlayer:React.FC<{stream:MediaStream}> = ({stream}) => {
         }
     },[stream])
   return (
-    <video
+    <div className='w-full h-full relative'>
+      <video
         ref={videoRef}
          className="w-full h-full object-cover rounded-xl"
         // style={{width:"300px" , height:"200px"}}
         autoPlay
     />
+    </div>
 
   )
 }
