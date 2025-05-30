@@ -7,7 +7,7 @@ import { peerReducer } from "../Reducers/peerReducer";
 import { addPeerAction, removePeerAction, resetAction } from "../Actions/peerActions";
 
 
-const ws_server = "http://localhost:3000";
+const ws_server = import.meta.env.SERVER;
 
 export const socketContext = createContext<any|null>(null);
 
@@ -31,8 +31,13 @@ export const SocketProvider :React.FC<Props> =({children})=>{
     useEffect(()=>{
 
         const userId = UUIDv4();
+        // const newPeer = new Peer(userId , {
+        //     host:"localhost",
+        //     port:9000,
+        //     path:"/myapp"
+        // });
         const newPeer = new Peer(userId , {
-            host:"localhost",
+            host:import.meta.env.SSERVER,
             port:9000,
             path:"/myapp"
         });
