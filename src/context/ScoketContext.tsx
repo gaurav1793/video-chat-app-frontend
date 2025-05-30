@@ -7,8 +7,8 @@ import { peerReducer } from "../Reducers/peerReducer";
 import { addPeerAction, removePeerAction, resetAction } from "../Actions/peerActions";
 
 
-const ws_server = "http://localhost:3000";
-
+const ws_server = import.meta.env.VITE_SERVER;
+console.log("web_Server",ws_server);
 export const socketContext = createContext<any|null>(null);
 
 const socket=SocektIoClient(ws_server);
@@ -32,10 +32,24 @@ export const SocketProvider :React.FC<Props> =({children})=>{
 
         const userId = UUIDv4();
         const newPeer = new Peer(userId , {
-            host:"localhost",
-            port:9000,
-            path:"/myapp"
+            config: {
+            iceServers: [
+            { urls: "stun:stun.l.google.com:19302" }
+            ]
+        }
         });
+        
+        // const newPeer = new Peer(userId , {
+        //     host:"localhost",
+        //     port:9000,
+        //     path:"/myapp"
+        // });
+
+        // const newPeer = new Peer(userId , {
+        //     host:import.meta.env.VITE_SSERVER,
+        //     port:9000,
+        //     path:"/myapp"
+        // });
         
         setUser(newPeer); 
         fetchUserFeed();
